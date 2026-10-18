@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muhammadziyo Vohidjon O‘g‘li</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0b0b0d;
+      color: #f5f0e8;
+      font-family: Georgia, serif;
+      line-height: 1.7;
+    }
+    header {
+      padding: 24px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #292929;
+    }
+    .logo { font-size: 21px; letter-spacing: 2px; }
+    nav a {
+      color: #c8b99f;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 14px;
+    }
+    .hero {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 10%;
+      background: radial-gradient(ellipse at 80% 20%, #30261d, #0b0b0d 65%);
+    }
+    .tag { color: #c8a879; letter-spacing: 4px; font-size: 12px; }
+    h1 { font-size: clamp(38px, 7vw, 76px); line-height: 1.15; margin: 24px 0; max-width: 850px; }
+    .hero p { color: #b9b3aa; max-width: 550px; }
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      border: 1px solid #b89b70;
+      padding: 11px 24px;
+      color: #e7d3b2;
+      text-decoration: none;
+      width: fit-content;
+    }
+    section { padding: 75px 8%; }
+    .eyebrow { color: #b89b70; letter-spacing: 3px; font-size: 12px; }
+    h2 { font-size: 34px; margin: 10px 0 28px; }
+    .about { max-width: 760px; color: #c5c0b8; }
+    .books {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 20px;
+    }
+    .book {
+      background: #151515;
+      border: 1px solid #292723;
+      padding: 28px 22px;
+      min-height: 180px;
+    }
+    .book small { color: #b89b70; }
+    .book h3 { margin: 16px 0 8px; font-size: 21px; }
+    .book p { color: #aaa49b; font-size: 14px; }
+    .quote {
+      background: #171511;
+      border-left: 2px solid #b89b70;
+      padding: 30px;
+      font-size: 22px;
+      color: #ded2c0;
+    }
+    .contact { background: #121211; }
+    .links { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+    .links a { color: #d5b98c; }
+    footer { padding: 25px; text-align: center; color: #777; border-top: 1px solid #292929; font-size: 13px; }
+    @media(max-width:600px) {
+      header { align-items: flex-start; gap: 15px; flex-direction: column; }
+      nav a { margin: 0 12px 0 0; }
+      section { padding: 55px 7%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">MUHAMMADZIYO.</div>
+    <nav>
+      <a href="#about">Muallif</a>
+      <a href="#books">Kitoblar</a>
+      <a href="#contact">Aloqa</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <span class="tag">MUALLIFLIK SAHIFASI</span>
+      <h1>Muhammadziyo<br>Vohidjon O‘g‘li</h1>
+      <p>Kitoblar, fikrlar va qalbga yetib boradigan satrlar olamiga xush kelibsiz.</p>
+      <a class="btn" href="#books">Kitoblarni ko‘rish ↗</a>
+    </div>
+
+    <section id="about">
+      <span class="eyebrow">MUALLIF HAQIDA</span>
+      <h2>So‘z va ma’no olami</h2>
+      <p class="about">Ushbu sahifa Muhammadziyo Vohidjon O‘g‘lining kitoblari va ijodiga bag‘ishlangan. Bu yerda asarlar, yangi nashrlar va muallifga oid ma’lumotlar bilan tanishishingiz mumkin.</p>
+    </section>
+
+    <section id="books">
+      <span class="eyebrow">ASARLAR</span>
+      <h2>Kitoblar</h2>
+      <div class="books">
+        <article class="book">
+          <small>01 / KITOB</small>
+          <h3>Kim jannatni istasa…</h3>
+          <p>Kitob haqida ma’lumot va nashr tafsilotlari.</p>
+        </article>
+        <article class="book">
+          <small>02 / KITOB</small>
+          <h3>Olimlarning ayollari</h3>
+          <p>Asar haqida ma’lumot va nashr tafsilotlari.</p>
+        </article>
+        <article class="book">
+          <small>03 / KITOB</small>
+          <h3>Olim yetishtirgan onalar</h3>
+          <p>Kitob haqida ma’lumot va nashr tafsilotlari.</p>
+        </article>
+        <article class="book">
+          <small>04 / KITOB</small>
+          <h3>Fotima roziyallohu anhuning isrofsiz to‘yi</h3>
+          <p>Asar haqida ma’lumot va nashr tafsilotlari.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="quote">“Yaxshi kitob — inson tafakkuriga ochilgan yangi eshik.”</div>
+    </section>
+
+    <section id="contact" class="contact">
+      <span class="eyebrow">BIZ BILAN BOG‘LANING</span>
+      <h2>Yangiliklardan xabardor bo‘ling</h2>
+      <p>Muallif va kitoblar haqidagi yangiliklar uchun ijtimoiy sahifalarni kuzating.</p>
+      <div class="links">
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+        <a href="https://t.me/" target="_blank" rel="noopener noreferrer">Telegram ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Muhammadziyo Vohidjon O‘g‘li · Barcha huquqlar himoyalangan</footer>
+</body>
+</html>

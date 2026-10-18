@@ -276,3 +276,118 @@ document.querySelectorAll("section,.book,.benefit").forEach(e=>{e.classList.add(
 </script>
 </body>
 </html>
+
+
+<section class="videos" id="videos">
+  <h2>🎬 Videolar galereyasi</h2>
+  <p>Muhammadziyo Vohidjon O‘g‘lining videolari</p>
+
+  <div class="video-grid" id="videoGallery">
+    <p>Videolar yuklanmoqda...</p>
+  </div>
+</section>
+
+<style>
+.videos {
+  padding: 60px 20px;
+  text-align: center;
+  background: #f7f1e7;
+  color: #44372b;
+}
+
+.videos h2 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 35px auto 0;
+}
+
+.video-grid video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 16px;
+  background: #211d19;
+  box-shadow: 0 8px 25px #6d573326;
+}
+
+.video-card {
+  padding: 12px;
+  background: #fffaf2;
+  border: 1px solid #e6d6bd;
+  border-radius: 20px;
+  text-align: left;
+}
+
+.video-card p {
+  margin: 12px 4px 4px;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .videos h2 { font-size: 25px; }
+}
+</style>
+
+<script>
+const repo = "Yaxyoxon7/Muhammadziyo-Vohidjon-O-g-li";
+
+async function loadVideos() {
+  const gallery = document.getElementById("videoGallery");
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${repo}/git/trees/HEAD?recursive=1`
+    );
+
+    if (!response.ok) throw new Error("Videolarni topib bo‘lmadi");
+
+    const data = await response.json();
+    const videos = data.tree.filter(file =>
+      /\.(mp4|webm|ogg|mov|m4v)$/i.test(file.path)
+    );
+
+    if (!videos.length) {
+      gallery.innerHTML =
+        "<p>Videolar topilmadi. GitHub’ga MP4 videolar yuklanganini tekshiring.</p>";
+      return;
+    }
+
+    gallery.innerHTML = "";
+
+    videos.forEach(file => {
+      const url =
+        `https://raw.githubusercontent.com/${repo}/HEAD/` +
+        file.path.split("/").map(encodeURIComponent).join("/");
+
+      const card = document.createElement("div");
+      card.className = "video-card";
+
+      const player = document.createElement("video");
+      player.src = url;
+      player.controls = true;
+      player.preload = "metadata";
+      player.playsInline = true;
+
+      const title = document.createElement("p");
+      title.textContent = file.path.split("/").pop()
+        .replace(/\.[^.]+$/, "")
+        .replace(/[-_]/g, " ");
+
+      card.append(player, title);
+      gallery.appendChild(card);
+    });
+  } catch (error) {
+    gallery.innerHTML =
+      "<p>Videolarni yuklashda xatolik. GitHub repository sozlamalarini tekshiring.</p>";
+  }
+}
+
+loadVideos();
+</script>

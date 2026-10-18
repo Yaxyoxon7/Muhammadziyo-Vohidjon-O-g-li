@@ -282,116 +282,199 @@ document.querySelectorAll("section,.book,.benefit").forEach(e=>{e.classList.add(
 
 
    
-<section class="videos" id="videos">
-  <h2>🎬 Videolar galereyasi</h2>
-  <p>Muhammadziyo Vohidjon O‘g‘lining videolari</p>
-
-  <div class="video-grid" id="videoGallery">
-    <p>Videolar yuklanmoqda...</p>
-  </div>
-</section>
-
-<style>
-.videos {
-  padding: 60px 20px;
-  text-align: center;
-  background: #f7f1e7;
-  color: #44372b;
-}
-
-.videos h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  max-width: 1100px;
-  margin: 35px auto 0;
-}
-
-.video-grid video {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 16px;
-  background: #211d19;
-  box-shadow: 0 8px 25px #6d573326;
-}
-
-.video-card {
-  padding: 12px;
-  background: #fffaf2;
-  border: 1px solid #e6d6bd;
-  border-radius: 20px;
-  text-align: left;
-}
-
-.video-card p {
-  margin: 12px 4px 4px;
-  font-weight: 600;
-}
-
-@media (max-width: 600px) {
-  .videos h2 { font-size: 25px; }
-}
-</style>
-
 <script>
-const repo = "Yaxyoxon7/Muhammadziyo-Vohidjon-O-g-li";
+const BOOKS = [
+ {
+  id: 'kim-jannatni-istasa',
+  title: 'Kim jannatni istasa…',
+  price: 52000,
+  cover: 'kim-jannatni-istasa.jpg',
+  desc: 'Jannatga eltuvchi ezgu amallar haqida.',
+  detail: 'Ushbu kitob haqida batafsil ma’lumot.'
+ },
+ {
+  id: 'olimlarning-ayollari',
+  title: 'Olimlarning ayollari',
+  price: 48000,
+  cover: 'olimlarning-ayollari.jpg',
+  desc: 'Ilm, odob va ibratli hayot haqida.',
+  detail: 'Ushbu kitob haqida batafsil ma’lumot.'
+ },
+ {
+  id: 'har-kuni-qanday-savob-olamiz',
+  title: 'Har kuni qanday savob olamiz?',
+  price: 55000,
+  cover: 'har-kuni-qanday-savob-olamiz.jpg',
+  desc: 'Kundalik hayotdagi savobli amallar haqida.',
+  detail: 'Ushbu kitob haqida batafsil ma’lumot.'
+ },
+ {
+  id: 'fotima-toyi',
+  title: 'Fotima roziyallohu anhuning isrofsiz to‘yi',
+  price: 60000,
+  cover: 'fotima-toyi.jpg',
+  desc: 'Soddalik va isrofsiz to‘y haqida.',
+  detail: 'Ushbu kitob haqida batafsil ma’lumot.'
+ }
+];
 
-async function loadVideos() {
-  const gallery = document.getElementById("videoGallery");
+const money = n =>
+  new Intl.NumberFormat('uz-UZ').format(n) + ' so‘m';
 
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${repo}/git/trees/HEAD?recursive=1`
-    );
+function renderBooks() {
+  const grid = document.getElementById('booksGrid');
 
-    if (!response.ok) throw new Error("Videolarni topib bo‘lmadi");
+  if (!grid) return;
 
-    const data = await response.json();
-    const videos = data.tree.filter(file =>
-      /\.(mp4|webm|ogg|mov|m4v)$/i.test(file.path)
-    );
+  grid.innerHTML = BOOKS.map(book => `
+    <article class="book-card">
+      <div class="book-art">
+        <div class="book-cover">
+          <img src="${book.cover}"
+               alt="${book.title}"
+               onerror="this.style.display='none'">
+          <span class="cover-title">${book.title}</span>
+        </div>
+      </div>
 
-    if (!videos.length) {
-      gallery.innerHTML =
-        "<p>Videolar topilmadi. GitHub’ga MP4 videolar yuklanganini tekshiring.</p>";
-      return;
-    }
+      <div class="book-info">
+        <h3>${book.title}</h3>
+        <p class="book-desc">${book.desc}</p>
 
-    gallery.innerHTML = "";
-
-    videos.forEach(file => {
-      const url =
-        `https://raw.githubusercontent.com/${repo}/HEAD/` +
-        file.path.split("/").map(encodeURIComponent).join("/");
-
-      const card = document.createElement("div");
-      card.className = "video-card";
-
-      const player = document.createElement("video");
-      player.src = url;
-      player.controls = true;
-      player.preload = "metadata";
-      player.playsInline = true;
-
-      const title = document.createElement("p");
-      title.textContent = file.path.split("/").pop()
-        .replace(/\.[^.]+$/, "")
-        .replace(/[-_]/g, " ");
-
-      card.append(player, title);
-      gallery.appendChild(card);
-    });
-  } catch (error) {
-    gallery.innerHTML =
-      "<p>Videolarni yuklashda xatolik. GitHub repository sozlamalarini tekshiring.</p>";
-  }
+        <div class="book-bottom">
+          <span class="price">${money(book.price)}</span>
+          <button class="details-link"
+                  onclick="openBook('${book.id}')">
+            Batafsil ko‘rish ↗
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join('');
 }
 
-loadVideos();
+function openBook(id) {
+  const book = BOOKS.find(item => item.id === id);
+  if (!book) return;
+
+  const modal = document.getElementById('bookModal');
+  const content = document.getElementById('modalContent');
+
+  content.innerHTML = `
+    <div class="detail-layout">
+      <div class="detail-cover-wrap">
+        <img src="${book.cover}"
+             alt="${book.title}"
+             style="width:190px;max-width:100%;border-radius:8px">
+      </div>
+
+      <div class="detail-copy">
+        <div class="eyebrow">Kitob haqida batafsil</div>
+        <h2>${book.title}</h2>
+
+        <div class="detail-price">${money(book.price)}</div>
+        <p>${book.desc}</p>
+        <p>${book.detail}</p>
+
+        <div class="detail-actions">
+          <a class="btn"
+             href="https://t.me/afifbooks_delivery"
+             target="_blank"
+             rel="noopener">
+            Telegram orqali buyurtma
+          </a>
+
+          <a class="btn secondary"
+             href="tel:+998958345550">
+            Telefon orqali buyurtma
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBook() {
+  const modal = document.getElementById('bookModal');
+  if (modal) modal.classList.remove('open');
+
+  document.body.style.overflow = '';
+}
+
+const closeButton = document.getElementById('modalClose');
+
+if (closeButton) {
+  closeButton.addEventListener('click', closeBook);
+}
+
+const modal = document.getElementById('bookModal');
+
+if (modal) {
+  modal.addEventListener('click', event => {
+    if (event.target === modal) closeBook();
+  });
+}
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeBook();
+});
+
+// Bosh sahifadagi kitoblar har 3 soniyada almashadi.
+let heroBookIndex = 0;
+
+function showHeroBook(index) {
+  const book = BOOKS[index];
+  if (!book) return;
+
+  const image = document.getElementById('heroBookImage');
+  const title = document.getElementById('heroBookTitle');
+  const count = document.getElementById('heroBookCount');
+
+  if (!image || !title || !count) return;
+
+  heroBookIndex = index;
+  image.src = book.cover;
+  image.alt = book.title;
+  title.textContent = book.title;
+  count.textContent = `${index + 1} / ${BOOKS.length}`;
+
+  document.querySelectorAll('#heroBookDots button')
+    .forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+}
+
+document.querySelectorAll('#heroBookDots button')
+  .forEach((dot, index) => {
+    dot.addEventListener('click', () => showHeroBook(index));
+  });
+
+setInterval(() => {
+  showHeroBook((heroBookIndex + 1) % BOOKS.length);
+}, 3000);
+
+// Joriy yil
+const year = document.getElementById('year');
+
+if (year) {
+  year.textContent = new Date().getFullYear();
+}
+
+// Mobil menyu
+const menuButton = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navlinks');
+
+if (menuButton && navLinks) {
+  menuButton.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+  });
+}
+
+// Kitoblarni chiqarish
+renderBooks();
 </script>
+</body>
+</html>
